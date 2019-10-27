@@ -1,9 +1,16 @@
 import React from "react";
 
-import LoginForm from "./LoginForm";
-import {CommitteePage} from "./CommitteePage";
-import CommitteeGrid from "../components/CommitteeGrid";
-
+import { LoginForm } from "./LoginForm";
+import { CommitteePage } from "./CommitteePage";
+import { CommitteeGrid } from "../components/CommitteeGrid";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useParams
+} from "react-router-dom";
 // TODO CALL committees endpoint on app component mount
 // TODO on each committee submit, submit a PUT on that committee
 // files uploaded separately, names to links are returned from get
@@ -11,29 +18,30 @@ import CommitteeGrid from "../components/CommitteeGrid";
 // TODO newsroom
 // TODO fileupload for topics and newsroom
 export const App = () => {
+
+
   const items = [
     {
-      name: "com 10",
-      link:
-        "https://stackoverflow.com/questions/384145/expanding-a-parent-div-to-the-height-of-its-children"
+      name: "com 1",
+      id: 1
     },
     {
-      name: "com 1"
+      name: "com 2"
     },
     {
-      name: "com 1"
+      name: "com 3"
     },
     {
-      name: "com 1"
+      name: "com 4"
     },
     {
-      name: "com 1"
+      name: "com 5"
     },
     {
-      name: "com 1"
+      name: "com 6"
     },
     {
-      name: "com 1"
+      name: "newsroom"
     }
   ];
   const committee = {
@@ -42,10 +50,15 @@ export const App = () => {
     events: [],
     topics: []
   };
-  const handleClick = url => console.log(url); //placeholder
+  
   return (
-    <div>
-      <CommitteePage committee={committee} />
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/committees" component={()=> <CommitteeGrid items={items}/>} />
+        <Route exact path="/committees/:committeeId" render={({match}) =>{
+          return <CommitteePage committee={committee} id={match.params.committeeId}/> }} />
+        <Route exact path="/login" component={LoginForm} />
+      </Switch>
+    </Router>
   );
 }

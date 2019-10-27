@@ -23,9 +23,10 @@ export const useStyles = makeStyles(theme => ({
     gridChild: {
       margin: "5px",
       height: "200px",
-      backgroundColor: "lightBlue",
-      flex: "1 0 25%",
+      flex: "1 0 27%",
       fontSize: "30px",
-      overflow: "auto"
+      overflow: "auto",
+      border: "1px solid black",
+      backgroundColor: "cyan"
     }
   }));

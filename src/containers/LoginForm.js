@@ -4,21 +4,21 @@ import axios from 'axios';
 import { Base64 } from "js-base64";
 import {CredentialFields} from "../components/CredentialFields";
 import {LoginButton} from "../components/LoginButton";
-
+import {useHistory} from "react-router-dom"
 export const LoginForm = () => {
     const classes = useStyles();
     const [credentials, setCredentials] = useState({
       username: "",
       password: ""
     });
-  
+    let history = useHistory();
     const handleStateChange = element => event => {
       setCredentials({ ...credentials, [element]: event.target.value });
     };
   
     const handleLogin = async () => {
       return await axios({
-        url: "http://localhost:3001/ap1/test",
+        url: "http://localhost:5000/api/auth/login",
         method: "post",
         data: {
           credentials: Base64.encode(
@@ -27,7 +27,8 @@ export const LoginForm = () => {
         }
       })
         .then(res => {
-          return res.data;
+          localStorage.setItem('token', res.data.access_token)
+          history.push('/committees')
         })
         .catch(error => console.log(error));
     };

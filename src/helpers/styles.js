@@ -18,15 +18,16 @@ export const useStyles = makeStyles(theme => ({
     },
     gridParent: {
       display: "flex",
-      flexWrap: "wrap"
+      flexWrap: "wrap",
+      border: "1px solid black",
+
     },
     gridChild: {
       margin: "5px",
-      height: "200px",
+      height: "150px",
       flex: "1 0 27%",
       fontSize: "30px",
       overflow: "auto",
       border: "1px solid black",
-      backgroundColor: "cyan"
     }
   }));

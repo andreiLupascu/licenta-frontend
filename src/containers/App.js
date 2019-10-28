@@ -41,7 +41,8 @@ export const App = () => {
       name: "com 6"
     },
     {
-      name: "newsroom"
+      name:"newsroom",
+      id: "newsroom"
     }
   ];
   const committee = {
@@ -57,7 +58,7 @@ export const App = () => {
         <Route exact path="/committees" component={()=> <CommitteeGrid items={items}/>} />
         <Route exact path="/committees/:committeeId" render={({match}) =>{
           return <CommitteePage committee={committee} id={match.params.committeeId}/> }} />
-        <Route exact path="/login" component={LoginForm} />
+        <Route exact path="/" component={LoginForm} />
       </Switch>
     </Router>
   );

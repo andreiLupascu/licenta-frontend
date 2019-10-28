@@ -82,7 +82,11 @@ export const CommitteePage = props => {
 
   return (
     <div>
+      <div>
       <Button variant="contained" onClick={handleSubmit}>Submit changes</Button>
+      </div>
+      <br></br>
+      <Button variant="contained" onClick={()=>history.push("/committees")}>Back to committees</Button>
       <form className={classes.container} noValidate autoComplete="off">
         <TextField
           id="title"

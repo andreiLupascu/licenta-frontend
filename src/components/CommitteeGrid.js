@@ -18,7 +18,6 @@ export const CommitteeGrid = props => {
             {item.name}
           </Button>
         ))}
-
       </div>
       <FilePond server="http://localhost:5001/api/files/upload?resolution=true"
         name="file"

@@ -30,7 +30,7 @@ export const LoginForm = () => {
           localStorage.setItem('token', res.data.access_token)
           history.push('/committees')
         })
-        .catch(error => console.log(error));
+        .catch(error => alert(error));
     };
   
     return (

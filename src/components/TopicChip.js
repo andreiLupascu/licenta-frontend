@@ -13,7 +13,6 @@ import Button from "@material-ui/core/Button";
 export const TopicChip = props => {
     const classes = useStyles();
     const topic = props.topic;
-    console.log(topic)
     return <div className={classes.container}>
         <TextField
             id="topicTitle"
@@ -27,9 +26,10 @@ export const TopicChip = props => {
         {(topic.resolutions.map(resolution => {
             return <div>
                 <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="file-name">Resolution name</InputLabel>
+                    <InputLabel htmlFor="file-name">Resolution</InputLabel>
                     <Select
-                        value={resolution.linkToResource}
+                        autoWidth
+                        value={resolution.linkToResource? resolution.linkToResource: "select a resolution name"}
                         onChange={props.handleChange("linkToResource", props.topic.id, resolution.id)}
                         inputProps={{
                             name: 'linkToResource',

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import { EventChip } from "../components/EventChip";
 import { useHistory } from "react-router-dom";
-import { TokenChip } from "../components/TokenChip";
+import { TopicChip } from "../components/TopicChip";
 
 export const CommitteePage = props => {
   const classes = useStyles();
@@ -54,8 +54,11 @@ export const CommitteePage = props => {
   const addEmptyTopic = () => {
     const emptyTopic = {
       id: topics.length,
-      passed: false,
-      linkToResource: ""
+      resolutions: [{
+        id: 0,
+        linkToResource: "",
+        passed: false
+      }]
     }
     const newTopics = Object.assign([], topics);
     newTopics.push(emptyTopic)
@@ -66,12 +69,36 @@ export const CommitteePage = props => {
     newTopics.pop();
     setTopics(newTopics);
   }
-  const handleTopicsChange = (element, id) => event => {
-    let newTopics = Object.assign([{}], events);
-    element === "selectedDate" ?
-    newTopics[id][element] =
-      event : newTopics[id][element] = event.target.value;
-    setEvents(newTopics);
+  const handleTopicsChange = (element, id, resId) => event => {
+    let newTopics = Object.assign([{}], topics);
+    element === "passed" ?
+      newTopics[id]['resolutions'][resId][element] = event.target.checked
+      : element === "linkToResource" ?
+        newTopics[id]['resolutions'][resId][element] = event.target.value
+        : newTopics[id][element] = event.target.value;
+    setTopics(newTopics);
+  }
+
+  const handleAddResolution = topicId => event => {
+    const newTopic = topics[topicId]
+    const topicResolutions = newTopic.resolutions
+    topicResolutions.push({
+      id: topicResolutions.length,
+      linkToResource: "",
+      passed: false
+    })
+    newTopic.resolutions = topicResolutions
+    const newTopics = Object.assign([{}], topics);
+    newTopics[topicId] = newTopic
+    setTopics(newTopics)
+  }
+
+  const handleRemoveResolution = topicId => event => {
+    const newTopic = topics[topicId]
+    newTopic.resolutions.pop()
+    let newTopics = Object.assign([{}], topics);
+    newTopics[topicId] = newTopic
+    setTopics(newTopics)
   }
 
   const handleSubmit = () => {
@@ -83,10 +110,10 @@ export const CommitteePage = props => {
   return (
     <div>
       <div>
-      <Button variant="contained" onClick={handleSubmit}>Submit changes</Button>
+        <Button variant="contained" onClick={handleSubmit}>Submit changes</Button>
       </div>
       <br></br>
-      <Button variant="contained" onClick={()=>history.push("/committees")}>Back to committees</Button>
+      <Button variant="contained" onClick={() => history.push("/committees")}>Back to committees</Button>
       <form className={classes.container} noValidate autoComplete="off">
         <TextField
           id="title"
@@ -124,10 +151,13 @@ export const CommitteePage = props => {
             topics.length === 0 || Object.keys(topics[0]) === 0
               ? null
               : topics.map(topic => (
-                <TokenChip topic={topic} handleChange={handleTopicsChange} />
+                <TopicChip topic={topic} handleChange={handleTopicsChange}
+                  resolutions={props.resolutions}
+                  handleAddRes={handleAddResolution}
+                  handleRemoveRes={handleRemoveResolution} />
               ))}
         </div>
-        {/* PLACEHOLDER FOR TOPICS */}
+        <br></br>
         <span>
           <Button variant="outlined" onClick={addEmptyTopic}>Add topic</Button>
           <Button variant="outlined" onClick={removeLastTopic}>Remove topic</Button>

@@ -51,13 +51,16 @@ export const App = () => {
     events: [],
     topics: []
   };
-  
+  const fileNames = [
+    "5d5afd45d42c0_2.pdf",
+    "response.pdf"
+]
   return (
     <Router>
       <Switch>
         <Route exact path="/committees" component={()=> <CommitteeGrid items={items}/>} />
         <Route exact path="/committees/:committeeId" render={({match}) =>{
-          return <CommitteePage committee={committee} id={match.params.committeeId}/> }} />
+          return <CommitteePage committee={committee} id={match.params.committeeId} resolutions={fileNames}/> }} />
         <Route exact path="/" component={LoginForm} />
       </Switch>
     </Router>

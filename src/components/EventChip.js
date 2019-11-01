@@ -54,7 +54,7 @@ export const EventChip = props => {
           <KeyboardDatePicker
             disableToolbar
             variant="inline"
-            format="dd/MM/yyyy"
+            format="yyyy/MM/dd"
             margin="normal"
             id="date-picker-inline"
             label="Event date"

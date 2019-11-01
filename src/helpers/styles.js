@@ -9,6 +9,14 @@ export const useStyles = makeStyles(theme => ({
       alignContent: "center",
       flexDirection: "column"
     },
+    containerNoWrap:{
+      display: "flex",
+      flexWrap: "nowrap",
+      justifyContent: "center",
+      alignItems: "center",
+      alignContent: "center",
+      flexDirection: "line"
+    },
     button: {
       margin: theme.spacing(1)
     },
@@ -24,7 +32,6 @@ export const useStyles = makeStyles(theme => ({
       display: "flex",
       flexWrap: "wrap",
       border: "1px solid black",
-
     },
     gridChild: {
       margin: "5px",

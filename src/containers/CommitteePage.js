@@ -1,19 +1,19 @@
 import { useStyles } from '../helpers/styles'
 import Button from "@material-ui/core/Button";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import { EventChip } from "../components/EventChip";
 import { useHistory } from "react-router-dom";
 import { TopicChip } from "../components/TopicChip";
+import axios from 'axios'
 
 export const CommitteePage = props => {
   const classes = useStyles();
   let history = useHistory();
+  
   const [committee, setCommittee] = useState({
-    title: props.committee.title ? props.committee.title : "",
-    chairPersons: props.committee.chairPersons
-      ? props.committee.chairPersons
-      : [""]
+    title: props.committee.title ? props.committee.title :"",
+    chairPersons: props.committee.chairPersons ? props.committee.chairPersons : [""]
   });
   const handleCommitteeChange = element => event => {
     setCommittee({ ...committee, [element]: event.target.value });
@@ -24,6 +24,7 @@ export const CommitteePage = props => {
 
   const handleEventsChange = (element, id) => event => {
     let newEvents = Object.assign([{}], events);
+    console.log(newEvents)
     element === "selectedDate" ?
       newEvents[id][element] =
       event : newEvents[id][element] = event.target.value;
@@ -103,17 +104,17 @@ export const CommitteePage = props => {
 
   const handleSubmit = () => {
     //TODO do
+    props.reload();
     console.log('submit changes')
     history.push('/committees')
   }
-
   return (
     <div>
       <div>
         <Button variant="contained" onClick={handleSubmit}>Submit changes</Button>
       </div>
       <br></br>
-      <Button variant="contained" onClick={() => history.push("/committees")}>Back to committees</Button>
+      <Button variant="contained" onClick={() => {props.reload(); history.push("/committees")}}>Back to menu</Button>
       <form className={classes.container} noValidate autoComplete="off">
         <TextField
           id="title"

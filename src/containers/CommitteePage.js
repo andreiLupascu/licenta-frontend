@@ -10,9 +10,10 @@ import axios from 'axios'
 export const CommitteePage = props => {
   const classes = useStyles();
   let history = useHistory();
-  
+  const id = props.id;
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
   const [committee, setCommittee] = useState({
-    title: props.committee.title ? props.committee.title :"",
+    title: props.committee.title ? props.committee.title : "",
     chairPersons: props.committee.chairPersons ? props.committee.chairPersons : [""]
   });
   const handleCommitteeChange = element => event => {
@@ -24,7 +25,6 @@ export const CommitteePage = props => {
 
   const handleEventsChange = (element, id) => event => {
     let newEvents = Object.assign([{}], events);
-    console.log(newEvents)
     element === "selectedDate" ?
       newEvents[id][element] =
       event : newEvents[id][element] = event.target.value;
@@ -35,7 +35,7 @@ export const CommitteePage = props => {
     {
       id: events.length,
       selectedDate: Date.now(),
-      schedule: [""],
+      schedule: "",
       title: "",
       location: "",
       description: ""
@@ -103,10 +103,23 @@ export const CommitteePage = props => {
   }
 
   const handleSubmit = () => {
-    //TODO do
-    props.reload();
-    console.log('submit changes')
-    history.push('/committees')
+    const payload = { ...committee, events, topics, id };
+
+    axios({
+      url: BASE_URL + '/committees',
+      method: 'PUT',
+      data: payload,
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    }
+    ).then(res => {
+        alert(res.data.msg)
+        props.reload();
+        history.push('/committees')})
+      .catch(err => console.log(err));
+
+
   }
   return (
     <div>
@@ -114,7 +127,7 @@ export const CommitteePage = props => {
         <Button variant="contained" onClick={handleSubmit}>Submit changes</Button>
       </div>
       <br></br>
-      <Button variant="contained" onClick={() => {props.reload(); history.push("/committees")}}>Back to menu</Button>
+      <Button variant="contained" onClick={() => { props.reload(); history.push("/committees") }}>Back to menu</Button>
       <form className={classes.container} noValidate autoComplete="off">
         <TextField
           id="title"

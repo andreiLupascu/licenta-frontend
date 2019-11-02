@@ -15,11 +15,12 @@ export const NewsRoom = props => {
 
     const classes = useStyles();
     let history = useHistory();
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
 
     const [articles, setArticles] = useState(props.articles===undefined? JSON.parse(localStorage.getItem('newsroom')):props.articles);
     
 
-    const links = props.links;
+    const links = props.links===undefined? JSON.parse(localStorage.getItem('newsLinks')):props.links;
 
     const handleNameChange = id => event =>{
         let newArticles = Object.assign([{}], articles);
@@ -28,18 +29,30 @@ export const NewsRoom = props => {
     }
 
     const handleArticleChange = id => event =>{
-        console.log(event.target.value)
-        console.log(id)
         let newArticles = Object.assign([{}], articles);
         newArticles[id-1]['uri']=event.target.value;
         setArticles(newArticles);
     }
 
+    const handleSubmit = () => {
+        axios({
+          url: BASE_URL + '/newsroom',
+          method: 'PUT',
+          data: articles,
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        }
+        ).then(res => {
+            alert(res.data.msg)
+            props.reload();
+            history.push('/committees')})
+          .catch(err => console.log(err));
+      }
     return (
-        console.log(articles),
         <div >
             <div>
-            <Button variant="outlined" onClick={() => {props.reload(); history.push("/committees")}}>Submit Changes</Button>
+            <Button variant="outlined" onClick={handleSubmit}>Submit Changes</Button>
             </div>
             <br></br>
             <Button variant="outlined" onClick={() => {props.reload(); history.push("/committees")}}>Back to menu</Button>

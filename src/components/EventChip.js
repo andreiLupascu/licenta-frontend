@@ -32,6 +32,7 @@ export const EventChip = props => {
         <TextField
           id="eventSchedule"
           label="Event Schedule"
+          helperText="format: 10:55-11:31, altfel crapa :D"
           className={classes.textField}
           value={props.event.schedule}
           onChange={props.handleChange("schedule", props.event.id)}
@@ -54,7 +55,7 @@ export const EventChip = props => {
           <KeyboardDatePicker
             disableToolbar
             variant="inline"
-            format="yyyy/MM/dd"
+            format="dd/MM/yyyy"
             margin="normal"
             id="date-picker-inline"
             label="Event date"

@@ -29,14 +29,18 @@ export const TopicChip = props => {
                     <InputLabel htmlFor="file-name">Resolution</InputLabel>
                     <Select
                         autoWidth
-                        value={resolution.linkToResource? resolution.linkToResource: "select a resolution name"}
+                        value={resolution.linkToResource ? resolution.linkToResource : "select a resolution name"}
                         onChange={props.handleChange("linkToResource", props.topic.id, resolution.id)}
                         inputProps={{
                             name: 'linkToResource',
                             id: 'resource-name',
                         }}
                     >
-                        {props.resolutions.map(resolutionName=><MenuItem value={resolutionName}>{resolutionName}</MenuItem>)}
+                        {
+                            props.resolutions === undefined ?
+                                JSON.parse(localStorage.getItem('resolutionLinks')).map(resolutionName => <MenuItem value={resolutionName}>{resolutionName}</MenuItem>)
+                                : props.resolutions.map(resolutionName => <MenuItem value={resolutionName}>{resolutionName}</MenuItem>)
+                        }
                     </Select>
                 </FormControl>
                 <FormGroup row>
@@ -50,8 +54,8 @@ export const TopicChip = props => {
             </div>
         }))}
         <span>
-        <Button variant="contained" onClick={props.handleAddRes(topic.id)}>Add resolution</Button>
-        <Button variant="contained" onClick={props.handleRemoveRes(topic.id)}>Remove resolution</Button>
+            <Button variant="contained" onClick={props.handleAddRes(topic.id)}>Add resolution</Button>
+            <Button variant="contained" onClick={props.handleRemoveRes(topic.id)}>Remove resolution</Button>
         </span>
     </div>
 }

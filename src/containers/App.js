@@ -51,15 +51,9 @@ const App = () => {
     }
   ];
   const [committees, setCommittees] = useState()
-  const resolutionLinks = [
-    "5d5afd45d42c0_2.pdf",
-    "response.pdf"
-  ]
 
-  const newsLinks = [
-    "5d5afd45d42c0_2.pdf",
-    "response.pdf"
-  ];
+  const [resolutionLinks, setResolutionLinks] = useState();
+  const [newsLinks, setNewsLinks] = useState();
 
   const [articles, setArticles] = useState()
 
@@ -72,7 +66,6 @@ const App = () => {
         method: 'GET',
       }
       ).then(res => {
-        console.log("APEEEEEEEEEEEEEEEL")
         setCommittees(res.data)
         localStorage.setItem('committees', JSON.stringify(res.data))
       })
@@ -83,9 +76,33 @@ const App = () => {
         method: 'GET',
       }
       ).then(res => {
-        console.log("NEWSROOOOOOOOOOOOOOOM")
         setArticles(res.data)
         localStorage.setItem('newsroom', JSON.stringify(res.data))
+      })
+        .catch(err => console.log(err));
+
+      await axios({
+        url: BASE_URL + '/files/resolution/names',
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      }
+      ).then(res => {
+        setResolutionLinks(res.data)
+        localStorage.setItem('resolutionLinks', JSON.stringify(res.data))
+      })
+        .catch(err => console.log(err));
+      await axios({
+        url: BASE_URL + '/files/news-article/names',
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      }
+      ).then(res => {
+        setNewsLinks(res.data)
+        localStorage.setItem('newsLinks', JSON.stringify(res.data))
       })
         .catch(err => console.log(err));
     }
@@ -95,18 +112,17 @@ const App = () => {
   return (
     <Switch>
       <Route exact path="/" component={LoginForm} />
-      <Route exact path="/committees" component={() => { return <CommitteeGrid items={items} /> }} />
+      <Route exact path="/committees" component={() => { return <CommitteeGrid items={items} reload={reload}/> }} />
       <Route exact path="/committees/:committeeId" render={({ match }) => {
-        console.log(match.params.committeeId[match.params.committeeId.length - 1])
         return <CommitteePage
           reload={reload}
           committee={committees === undefined ?
             [...JSON.parse(localStorage.getItem('committees'))][match.params.committeeId[match.params.committeeId.length - 1] - 1]
             : committees[match.params.committeeId[match.params.committeeId.length - 1] - 1]}
-          id={match.params.committeeId}
+          id={parseInt(match.params.committeeId[match.params.committeeId.length - 1])}
           resolutions={resolutionLinks} />
       }} />
-      <Route exact path="/newsroom" component={() => <NewsRoom articles={articles} links={newsLinks} reload={reload}/>} />
+      <Route exact path="/newsroom" component={() => <NewsRoom articles={articles} links={newsLinks} reload={reload} />} />
 
     </Switch>
   );

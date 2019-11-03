@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LoginForm } from "./LoginForm";
 import { CommitteePage } from "./CommitteePage";
 import { CommitteeGrid } from "../components/CommitteeGrid";
@@ -7,9 +7,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  Redirect,
-  useParams,
   withRouter
 } from "react-router-dom";
 import axios from "axios";

@@ -11,10 +11,15 @@ export const CommitteeGrid = props => {
   
   const handleLogout = () => {
     localStorage.removeItem('token');
+    props.reload();
     alert('You have logged out.')
     history.push('/')
   }
 
+  const handleFileSubmitted = () =>{
+    alert('File succesfully uploaded!');
+    props.reload();
+  }
   return (
     <div>
       <div className={classes.gridParent}>
@@ -43,7 +48,7 @@ export const CommitteeGrid = props => {
         name="file"
         labelFileProcessingError="Invalid file."
         labelIdle='Upload RESOLUTION .pdf file (name is important)'
-        onprocessfile={(error, file) => { error ? console.log() : console.log(JSON.parse(file.serverId)['fileLocation']) }} />
+        onprocessfile={(error, file) => { error ? console.log() : handleFileSubmitted() }} />
       <FilePond
         server={{
           url: BASE_URL + "/files/upload",
@@ -58,7 +63,9 @@ export const CommitteeGrid = props => {
         name="file"
         labelFileProcessingError="Invalid file."
         labelIdle='Upload NEWS-ARTICLE .pdf file (name is important)'
-        onprocessfile={(error, file) => { error ? console.log() : console.log(JSON.parse(file.serverId)['fileLocation']) }} />
+        onprocessfile={(error, file) => { error ? console.log() : handleFileSubmitted() }} 
+        />
+        
       <Button variant="contained"
         key={"logout"}
         onClick={handleLogout}

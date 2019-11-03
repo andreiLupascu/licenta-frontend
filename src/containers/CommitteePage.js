@@ -1,6 +1,6 @@
 import { useStyles } from '../helpers/styles'
 import Button from "@material-ui/core/Button";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import { EventChip } from "../components/EventChip";
 import { useHistory } from "react-router-dom";
